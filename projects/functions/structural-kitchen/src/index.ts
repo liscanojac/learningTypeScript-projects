@@ -83,7 +83,6 @@ export function createKitchen(
 		prepare: (recipe) => {
 			if (state.dirt < 100) {
 				state.dirt = state.dirt + 1;
-
 				let recipeResult = recipe(state.stock);
 
 				if (recipeResult.succeeded) {

@@ -6,50 +6,45 @@ type OptionsType = {
 	align?: "left" | "right" | "middle";
 };
 
-type Options = {
-	width: number;
-	align: "left" | "right" | "middle";
-};
-
 export function alignTexts(texts: string[], options: OptionsType): string[][] {
 	let resultArr: string[][] = [];
 
 	for (let i = 0; i < texts.length; i++) {
-		resultArr.push(
-			strHandler(texts[i], {
-				align: "left",
-				...options,
-			})
-		);
+		resultArr.push(strHandler(texts[i], options));
 	}
-
 	return resultArr;
 }
 
-function strHandler(str: string, options: Options): Array<string> {
-	if (str.length > options.width) {
-		return chunkStr(str, options);
+function strHandler(
+	str: string,
+	{ align = "left", width }: OptionsType
+): Array<string> {
+	if (str.length > width) {
+		return chunkStr(str, { align, width });
 	}
 
-	return [padStr(str, options)];
+	return [padStr(str, { align, width })];
 }
 
-function chunkStr(str: string, options: Options): Array<string> {
+function chunkStr(
+	str: string,
+	{ align = "left", width }: OptionsType
+): Array<string> {
 	const resultArr: Array<string> = [];
 	const strArr = str.split(" ");
 
 	for (let i = 0; i < strArr.length; i++) {
-		resultArr.push(padStr(strArr[i], options));
+		resultArr.push(padStr(strArr[i], { align, width }));
 	}
 	return resultArr;
 }
 
-function padStr(str: string, options: Options): string {
+function padStr(str: string, { align = "left", width }: OptionsType): string {
 	const alignOptions = {
-		left: () => str.padEnd(options.width),
-		right: () => str.padStart(options.width),
+		left: () => str.padEnd(width),
+		right: () => str.padStart(width),
 		middle: () => {
-			const gap = options.width - str.length;
+			const gap = width - str.length;
 			const gapLeft = Math.floor(gap / 2);
 			const gapRight = Math.ceil(gap / 2);
 
@@ -57,5 +52,5 @@ function padStr(str: string, options: Options): string {
 		},
 	};
 
-	return alignOptions[options.align]();
+	return alignOptions[align]();
 }

@@ -22,7 +22,6 @@ function strHandler(
 	if (str.length > width) {
 		return chunkStr(str, { align, width });
 	}
-
 	return [padStr(str, { align, width })];
 }
 
@@ -51,6 +50,5 @@ function padStr(str: string, { align = "left", width }: OptionsType): string {
 			return " ".repeat(gapLeft) + str + " ".repeat(gapRight);
 		},
 	};
-
 	return alignOptions[align]();
 }

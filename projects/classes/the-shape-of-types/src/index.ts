@@ -13,26 +13,28 @@ export abstract class Horror {
 	#consumed: Array<Consumed> = [];
 	#power: number = 0;
 
-	abstract isEvil(): boolean;
-	abstract getPowerFrom(previouslyConsumed: Consumed): number;
+	protected abstract isEvil(): boolean;
+	protected abstract getPowerFrom(previouslyConsumed: Consumed): number;
 
 	getPower(): number {
 		return this.#power;
 	}
 
 	doBattle(opponent: Horror) {
-		if (this.getPower > opponent.getPower) {
-			this.#consumes(opponent);
+		if (this.getPower >= opponent.getPower) {
+			this.#consume(opponent);
 		}
 	}
 
-	#consumes(opponent: Horror) {
-		this.#consumed.push({
+	#consume(opponent: Horror) {
+		const opponentConsumed: Consumed = {
 			name: opponent.name,
 			power: opponent.getPower(),
 			evil: opponent.isEvil(),
-		});
-		this.#power += opponent.getPower();
+		};
+
+		this.#consumed.push(opponentConsumed);
+		this.#power += this.getPowerFrom(opponentConsumed) + 1;
 	}
 }
 

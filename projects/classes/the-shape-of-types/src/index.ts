@@ -21,7 +21,7 @@ export abstract class Horror {
 	}
 
 	doBattle(opponent: Horror) {
-		if (this.getPower >= opponent.getPower) {
+		if (this.getPower() >= opponent.getPower()) {
 			this.#consume(opponent);
 		}
 	}
